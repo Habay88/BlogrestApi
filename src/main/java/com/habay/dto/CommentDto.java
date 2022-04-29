@@ -9,11 +9,10 @@ import lombok.Setter;
 
 
 @Data
-@Getter
-@Setter
+
 public class CommentDto {
 
-	private Long id;
+	private long id;
 	private String email;
 	
 	private String name;

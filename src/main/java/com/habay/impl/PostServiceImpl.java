@@ -3,6 +3,7 @@ package com.habay.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,9 +23,12 @@ public class PostServiceImpl implements PostService {
 	
 	private PostRepository prepo;
 	
+	private ModelMapper mapper;
 	
-	public PostServiceImpl(PostRepository prepo) {
+	
+	public PostServiceImpl(PostRepository prepo,ModelMapper mapper) {
 		this.prepo = prepo;
+		this.mapper = mapper;
 	}
 
 
@@ -79,20 +83,22 @@ public class PostServiceImpl implements PostService {
 	}
 	// convert entity to dto
    private PostDto mapToDto(Post post) {
-   PostDto postDto = new PostDto();
-   postDto.setId(post.getId());
-   postDto.setTitle(post.getTitle());
-   postDto.setDescription(post.getDescription());
-   postDto.setContent(post.getContent());
+	   PostDto postDto = mapper.map(post, PostDto.class);
+//   PostDto postDto = new PostDto();
+//   postDto.setId(post.getId());
+//   postDto.setTitle(post.getTitle());
+//   postDto.setDescription(post.getDescription());
+//   postDto.setContent(post.getContent());
    return postDto;
 }
    
    // convert dto to entity
    private Post mapToEntity(PostDto postDto) {
-	   Post post = new Post();
-		post.setTitle(postDto.getTitle());
-		post.setDescription(postDto.getDescription());
-		post.setContent(postDto.getContent());
+	   Post post = mapper.map(postDto, Post.class);
+//	   Post post = new Post();
+//		post.setTitle(postDto.getTitle());
+//		post.setDescription(postDto.getDescription());
+//		post.setContent(postDto.getContent());
 		return post;
 		
    }
