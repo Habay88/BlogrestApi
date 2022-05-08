@@ -2,8 +2,11 @@ package com.habay.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,9 +32,9 @@ public class PostController {
 	public PostController(PostService postservice) {
 		this.postservice = postservice;
 	}
-	
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping
-	public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto){
+	public ResponseEntity<PostDto> createPost(@Valid @RequestBody PostDto postDto){
 		return new ResponseEntity<>(postservice.createPost(postDto),HttpStatus.CREATED);
 	}
 //	without pagination
@@ -55,8 +58,9 @@ public class PostController {
 		return ResponseEntity.ok(postservice.getPostById(id));
 	}
 	
+	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/{id}")
-	public ResponseEntity<PostDto> updatePost(@RequestBody PostDto postDto,@PathVariable(name = "id")Long id){
+	public ResponseEntity<PostDto> updatePost(@Valid @RequestBody PostDto postDto,@PathVariable(name = "id")Long id){
 		PostDto postResponse = postservice.updatePost(postDto, id);
 		return new ResponseEntity<>(postResponse, HttpStatus.OK);
 	}
